@@ -1,0 +1,59 @@
+{
+      "teams": [
+        {
+          "team_id": "team1",
+          "name": "FC Juventus",
+          "players":[{
+            "player_id": "player1",
+            "name": "Christiano Ronaldo",
+            "goals": 30,
+            "appearances": 40,
+            "tackle": 17
+          },
+          {
+            "player_id": "player2",
+            "name": "Leonardo Bonucci",
+            "goals": 2,
+            "appearances": 40,
+            "tackle": 61
+          }]
+        },
+        {
+          "team_id": "team2",
+          "name": "AC Milan",
+          "players":[{
+            "player_id": "player3",
+            "name": "Gianluigi Donnarumma",
+            "goals": 23,
+            "appearances": 30,
+            "tackle": 4
+          },
+          {
+            "player_id": "player4",
+            "name": "Krzysztof Piatek",
+            "goals": 34,
+            "appearances": 10,
+            "tackle": 17
+          }]
+        },
+        {
+          "team_id": "team3",
+          "name": "FC Liverpool",
+          "players":[
+            {
+            "player_id": "player5",
+            "name": "Mohamed Salah",
+            "goals": 45,
+            "appearances": 45,
+            "tackle": 30
+            },
+          {
+            "player_id": "player6",
+            "name": "Roberto Firmino",
+            "goals": 33,
+            "appearances": 23,
+            "tackle": 12
+          }]
+        }
+      ]
+}
