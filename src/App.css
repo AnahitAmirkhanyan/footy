@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: cursive;
 }
 
 body {
@@ -23,6 +23,7 @@ body {
 .flexbox .board {
   display: flex;
   border-style: dashed;
+  border-radius: 20px;
   justify-content: space-between;
   width: 500px;
   height: 500px;
