@@ -2,9 +2,32 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { fetchCount } from './counterAPI';
 
 const initialState = {
-  value: 0,
-  status: 'idle',
+  league: [
+    {
+      teamId: 1,
+      status: 123,
+    },
+
+  ],
+  teams: [
+    {
+      name: 1212,
+      id: 1,
+      players:[{
+        id: 1,
+        name: "aaaaaa",
+        disabled: false,
+      },
+      {
+        id: 2,
+        name: "bbbbb",
+        disabled: false,
+      }]
+    }
+  ]
 };
+
+
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -30,7 +53,7 @@ export const counterSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      state.value += 1;
+      console.log(state.league);
     },
     decrement: (state) => {
       state.value -= 1;
