@@ -1,12 +1,6 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux';
-import { getTeam } from '../actions/clientActions';
 
 class TeamStats extends Component {
-
-    constructor(props) {
-        super(props);
-    }
 
     // componentDidMount() {
     //     const { getTeam, value } = this.props;
@@ -31,8 +25,17 @@ class TeamStats extends Component {
                 <h3>{team.name}</h3>
                 <br/>
                 <div>
-                    <li>Goals: {teamGoals}</li>
-                    <li>Tackle: {teamTackle}</li>
+                    <li>Goals: 
+                        <span className={this.props.statProps.teamGoals}>
+                            {teamGoals}
+                        </span>    
+                    </li>
+                    <li>Tackle: 
+                        <span className={this.props.statProps.teamTackle}>
+                            {teamTackle}
+                        </span>
+
+                    </li>
                 </div>
             </div>
         )

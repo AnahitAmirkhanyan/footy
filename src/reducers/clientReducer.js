@@ -10,7 +10,7 @@ const initialState = {
     currentlyComparing: ''
 };
 
-export default function(state = initialState, action) {
+export default function clientReducer(state = initialState, action) {
     switch (action.type) {
         case FETCH_TEAMS:
             return {
@@ -20,7 +20,7 @@ export default function(state = initialState, action) {
 
         case GET_TEAM_ONE_BY_ID:
             const teamOneID = action.payload;
-            const teamOne = state.teams.find(item => item.team_id == teamOneID);
+            const teamOne = state.teams.find(item => item.team_id === teamOneID);
             return {
                 ...state, 
                 teamOne
@@ -28,7 +28,7 @@ export default function(state = initialState, action) {
         
         case GET_TEAM_TWO_BY_ID:
             const teamTwoID = action.payload;
-            const teamTwo = state.teams.find(item => item.team_id == teamTwoID);
+            const teamTwo = state.teams.find(item => item.team_id === teamTwoID);
             return {
                 ...state, 
                 teamTwo
@@ -36,7 +36,7 @@ export default function(state = initialState, action) {
         
         case GET_PLAYER_ONE_BY_ID:
             const playerOneID = action.payload;
-            const playerOneData = state.teams.find(item => item.players.find(pl => pl.player_id == playerOneID));
+            const playerOneData = state.teams.find(item => item.players.find(pl => pl.player_id === playerOneID));
             const playerOne = playerOneData.players.find(player => player.player_id === playerOneID);
             return {
                 ...state,
@@ -45,7 +45,7 @@ export default function(state = initialState, action) {
         
         case GET_PLAYER_TWO_BY_ID:
             const playerTwoID = action.payload;
-            const playerTwoData = state.teams.find(item => item.players.find(pl => pl.player_id == playerTwoID));
+            const playerTwoData = state.teams.find(item => item.players.find(pl => pl.player_id === playerTwoID));
             const playerTwo = playerTwoData.players.find(player => player.player_id === playerTwoID);
             
             return {

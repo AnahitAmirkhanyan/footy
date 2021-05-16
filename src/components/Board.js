@@ -19,69 +19,148 @@ class Board extends Component {
         this.dragOver =this.dragOver.bind(this); 
     }
 
-    componentDidUpdate() {
-        const {getPlayerOne, getPlayerTwo, getTeamOne, getTeamTwo } = this.props;
-        if(!this.state.displayedTypeTeam) {
-            this.state.leftDisplayed && getPlayerOne(this.state.leftDisplayed);
-            this.state.rightDisplayed && getPlayerTwo(this.state.rightDisplayed);
-        } else {
-            this.state.leftDisplayed && getTeamOne(this.state.leftDisplayed);
-            this.state.rightDisplayed && getTeamTwo(this.state.rightDisplayed);
-        }
-    }
-
     drop = e => {
         e.preventDefault();
         const itemID = e.dataTransfer.getData('item_id');
         const { setCurrentlyComparing } = this.props;
 
-        if(itemID.charAt(0) === 't'){
+        const displayedTypeTeam = (itemID.charAt(0) === 't');
+
+        if(this.state.displayedTypeTeam !== '') {
+            if(displayedTypeTeam !== this.state.displayedTypeTeam) {
+                return ;
+            }        
+        }
+        
+
+        if(displayedTypeTeam){
             this.setState({
-                displayedTypeTeam: true
+                displayedTypeTeam: displayedTypeTeam
             }, () => setCurrentlyComparing("team"));
         } else {
             this.setState({
-                displayedTypeTeam: false     
+                displayedTypeTeam: displayedTypeTeam     
             }, () => setCurrentlyComparing("player"));
         }
 
-        if(this.state.leftDisplayed) {
-            if(this.state.leftDisplayed === itemID || this.state.rightDisplayed === itemID) {
+        let leftDisplayed = this.state.leftDisplayed;
+        let rightDisplayed = this.state.rightDisplayed;
+
+        if(leftDisplayed) {
+            if(leftDisplayed === itemID || rightDisplayed === itemID) {
                 return;
             }
-            if(this.state.rightDisplayed) {
-                this.setState({
-                    leftDisplayed: this.state.rightDisplayed,
-                    rightDisplayed: itemID
-                });
+            
+            if(rightDisplayed) {
+                leftDisplayed = rightDisplayed;
+                rightDisplayed = itemID;
             } else {
-                this.setState({
-                    rightDisplayed:itemID
-                });
+                rightDisplayed = itemID;
             }
         } else {
-            this.setState ({
-                leftDisplayed: itemID,
-             });
-        }    
+            leftDisplayed = itemID;
+        }
+
+        this.setState({
+            leftDisplayed, 
+            rightDisplayed
+        });
+        
+        const {getPlayerOne, getPlayerTwo, getTeamOne, getTeamTwo } = this.props;
+        
+        if(!displayedTypeTeam) {
+            leftDisplayed && getPlayerOne(leftDisplayed);
+            rightDisplayed && getPlayerTwo(rightDisplayed);
+        } else {
+            leftDisplayed && getTeamOne(leftDisplayed);
+
+            if(rightDisplayed) {
+                getTeamTwo(rightDisplayed);
+            }
+        }
     }
 
     dragOver = e => {
         e.preventDefault();
     }
 
+    objectCompareAndReturn(objOne, objTwo, propNames) {
+        const leftProps = {};
+        const rightProps = {};
+        
+        for(const propName of propNames) {
+            if(objOne[propName] > objTwo[propName]) {
+                leftProps[propName] = 'green';
+                rightProps[propName] = 'red';
+            } else if(objOne[propName] < objTwo[propName]) {
+                rightProps[propName] = 'green';
+                leftProps[propName] = 'red';
+            } else if(objOne[propName] === objTwo[propName]) {
+                rightProps[propName] = 'brown';
+                leftProps[propName]  = 'brown';
+            }
+        }
+        
+        return {
+            leftProps, rightProps
+        }
+    }
+
     render() {
 
         let leftItem, rightItem;
         if(this.state.displayedTypeTeam){
-            leftItem = <TeamStats value={this.props.teamOne}/>
-            rightItem = <TeamStats value={this.props.teamTwo}/>
-        } else {
-            leftItem = <PlayerStats value={this.props.playerOne}/>
-            rightItem = <PlayerStats value={this.props.playerTwo}/>
-        }
+            const teamOneStats = {
+                teamGoals: 0,
+                teamTackle: 0
+            };
 
-        
+            const teamTwoStats = {
+                teamGoals: 0,
+                teamTackle: 0
+            }
+            
+            if(this.props.teamOne) {
+                const team = this.props.teamOne;
+                if(team.players){
+                    team.players.forEach(player => {
+                        teamOneStats.teamGoals += player.goals; 
+                        teamOneStats.teamTackle += player.tackle
+                    });
+                    teamOneStats.teamGoals /= team.players.length;
+                    teamOneStats.teamTackle /= team.players.length;
+                }
+            }
+
+            if(this.props.teamTwo) {
+                const team = this.props.teamTwo;
+                if(team.players){
+                    team.players.forEach(player => {
+                        teamTwoStats.teamGoals += player.goals; 
+                        teamTwoStats.teamTackle += player.tackle
+                    });
+                    teamTwoStats.teamGoals /= team.players.length;
+                    teamTwoStats.teamTackle /= team.players.length;
+                }
+            }
+            
+            const {leftProps, rightProps} = this.objectCompareAndReturn(teamOneStats, teamTwoStats, [
+                'teamGoals',
+                'teamTackle'
+            ]);
+
+            leftItem = <TeamStats statProps={leftProps} value={this.props.teamOne}/>
+            rightItem = <TeamStats statProps={rightProps} value={this.props.teamTwo}/>
+        } else {
+            const {leftProps, rightProps} = this.objectCompareAndReturn(this.props.playerOne, this.props.playerTwo, [
+                'goals',
+                'appearances',
+                'tackle'
+            ])
+
+            leftItem = <PlayerStats statProps={leftProps} value={this.props.playerOne}/>
+            rightItem = <PlayerStats statProps={rightProps} value={this.props.playerTwo}/>
+        }        
 
         return (
             <div
