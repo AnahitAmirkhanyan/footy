@@ -32,27 +32,22 @@ class Board extends Component {
         if(itemID === this.state.leftDisplayed) {
             if(rightDisplayed){
                 leftDisplayed = rightDisplayed;
-                rightDisplayed ='';  
+                rightDisplayed = '';  
             } else {
                 leftDisplayed = '';
             }
         }
 
-        const { setCurrentlyComparing } =this.props;
+        const { getPlayerOne, getPlayerTwo, getTeamOne, getTeamTwo, setCurrentlyComparing } =this.props;
 
-        if(!leftDisplayed && !rightDisplayed) {
-            setCurrentlyComparing('');
-            displayedTypeTeam = '';
-        }
+      
 
         this.setState({
             leftDisplayed,
             rightDisplayed,
             displayedTypeTeam
         });
-        
-        const {getPlayerOne, getPlayerTwo, getTeamOne, getTeamTwo } = this.props;
-        
+                
         if(!displayedTypeTeam) {
             leftDisplayed && getPlayerOne(leftDisplayed);
             rightDisplayed && getPlayerTwo(rightDisplayed);
@@ -63,7 +58,17 @@ class Board extends Component {
                 getTeamTwo(rightDisplayed);
             }
         }
-        
+
+        if(!leftDisplayed && !rightDisplayed) {
+            setCurrentlyComparing('');
+            this.setState({
+                displayedTypeTeam: ''
+            })
+            getTeamTwo('');
+            getTeamOne('');
+            getPlayerTwo('');
+            getPlayerOne('');
+        }
     }
 
     drop = e => {
@@ -199,7 +204,7 @@ class Board extends Component {
             leftItem = <TeamStats statProps={leftProps} value={this.props.teamOne} handleClick={this.handleClick}/>
             rightItem = <TeamStats statProps={rightProps} value={this.props.teamTwo} handleClick={this.handleClick}/>
         } else {
-            const {leftProps, rightProps} = this.objectCompareAndReturn(this.props.playerOne, this.props.playerTwo, [
+            const {leftProps, rightProps} = this.objectCompareAndReturn(this.state.leftDisplayed, this.state.rightDisplayed, [
                 'goals',
                 'appearances',
                 'tackle'

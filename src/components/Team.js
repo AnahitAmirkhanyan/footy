@@ -8,8 +8,7 @@ class Team extends Component {
     constructor(props) {
         super(props);
         this.state =  {
-            playersDisplayed: false,
-            draggable: this.props.draggable
+            playersDisplayed: false
         }
 
         this.displayPlayers = this.displayPlayers.bind(this);
@@ -36,12 +35,21 @@ class Team extends Component {
 
     render() {
 
-        const { currentlyComparing } = this.props;
+        const { currentlyComparing, teamOne, teamTwo } = this.props;
+        const id = this.props.value.team_id;
         let classname = 'team';
+        let draggable = true;
         if(currentlyComparing === "team") {
-            classname += " green"
+            classname += " green";
+            draggable = true;
         } else if (currentlyComparing === "player") {
-            classname += " red"
+            classname += " red";
+            draggable = false;
+        }
+
+        if((teamOne && teamOne.team_id === id) || (teamTwo && teamTwo.team_id === id)) {
+            classname += " red";
+            draggable = false;
         }
 
         const players = this.props.value.players.map(player => (
@@ -53,12 +61,13 @@ class Team extends Component {
         return (
             <div>
                 <div className={classname} 
-                 id={this.props.value.team_id} 
+                 id={id} 
                  onDragStart={this.dragStart} 
                  onClick={this.displayPlayers}
                  onDragOver={this.dragOver}
-                 draggable="true"    
+                 draggable={draggable}   
             >
+                <i className={this.state.playersDisplayed ? "arrowDown" : "arrowUp"}></i>
                  { this.props.value.name } 
                 
             </div>
@@ -76,9 +85,11 @@ const mapDispatchToProps = dispatch => ({
 })
 
 function mapStateToProps(state) {
-    const { currentlyComparing } = state.teams;
+    const { currentlyComparing, teamOne, teamTwo } = state.teams;
     return {
-        currentlyComparing
+        currentlyComparing,
+        teamOne,
+        teamTwo
     }
 }
 

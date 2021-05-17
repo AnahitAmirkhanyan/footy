@@ -1,45 +1,37 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { fetchTeams, getCurrentlyComparing } from '../actions/clientActions';
+import { fetchLeagues, fetchTeams, getCurrentlyComparing } from '../actions/clientActions';
 import '../App.css';
 import Team from './Team';
+import League from './League';
 
 
 class List extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            comparePlayer: ''
-        }
     }
 
     componentDidMount() {
-        const { fetchTeams } = this.props;
+        const { fetchLeagues, fetchTeams } = this.props;
 
+        fetchLeagues();
         fetchTeams();
-        getCurrentlyComparing();
+
         const { teams } = this.props;
-        const { currentlyComparing } = teams;
-        if(currentlyComparing === "player") {
-            this.setState({
-                comparePlayer: true
-            });
-        }
-        else {
-            this.setState({
-                comparePlayer: false
-            });
-        }
     }    
 
     render() {
-        getCurrentlyComparing();
        
-        const { teams } = this.props;
-        const menu = teams.teams.map(team => (
-            <Team key={team.team_id} value={team}/>
-        ));
+        // const { teams } = this.props;
+        // const menu = teams.map(team => (
+        //     <Team key={team.team_id} value={team}/>
+        // ));
+        const { leagues } = this.props;
+
+        const menu = leagues.map(league => (
+            <League key={league.league_id} value = {league}/>
+        ))
 
         return (
             <div className="nav">
@@ -54,15 +46,14 @@ class List extends Component {
 
 const mapDispatchToProps = dispatch => ({
     fetchTeams: () => dispatch(fetchTeams()),
-    getCurrentlyComparing: () => dispatch(getCurrentlyComparing())
+    fetchLeagues: () => dispatch(fetchLeagues())
 })
 
 function mapStateToProps(state) {
-    const { teams } = state;
-    const { currentlyComparing } = teams;
+    const { leagues, teams } = state.teams;
     return {
-        teams,
-        currentlyComparing
+        leagues,
+        teams
     }
 }
 

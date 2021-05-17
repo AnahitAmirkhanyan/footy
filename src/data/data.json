@@ -1,4 +1,17 @@
 {
+
+    "leagues":[
+      {
+        "league_id": "league1",
+        "name": "Seria A",
+        "teams":["team1", "team2"]
+      },
+      {
+        "league_id": "league2",
+        "name": "Premier League",
+        "teams":["team3", "team4"]
+      }
+      ],
       "teams": [
         {
           "team_id": "team1",
@@ -53,6 +66,25 @@
             "goals": 33,
             "appearances": 23,
             "tackle": 12
+          }]
+        },
+        {
+          "team_id": "team4",
+          "name": "Tottenham Hotspur",
+          "players":[
+            {
+            "player_id": "player7",
+            "name": "Son Heung-min",
+            "goals": 36,
+            "appearances": 60,
+            "tackle": 47
+            },
+          {
+            "player_id": "player8",
+            "name": "Dele Alli",
+            "goals": 15,
+            "appearances": 60,
+            "tackle": 47
           }]
         }
       ]

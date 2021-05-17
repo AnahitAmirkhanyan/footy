@@ -1,4 +1,12 @@
-import { FETCH_TEAMS, GET_TEAM_ONE_BY_ID, GET_TEAM_TWO_BY_ID, GET_PLAYER_ONE_BY_ID, GET_PLAYER_TWO_BY_ID, GET_CURRENTLY_COMPARING, SET_CURRENTLY_COMPARING } from './types';
+import { FETCH_LEAGUES, FETCH_TEAMS, GET_TEAM_ONE_BY_ID, GET_TEAM_TWO_BY_ID, GET_PLAYER_ONE_BY_ID, GET_PLAYER_TWO_BY_ID, GET_CURRENTLY_COMPARING, SET_CURRENTLY_COMPARING } from './types';
+
+export const fetchLeagues = () => async dispatch => {
+  const list = require('../data/data.json');
+    dispatch({
+      type: FETCH_LEAGUES,
+      payload: list.leagues
+    })
+};
 
 export const fetchTeams = () => async dispatch => {
     const list = require('../data/data.json');

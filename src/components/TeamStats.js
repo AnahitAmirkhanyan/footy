@@ -17,9 +17,6 @@ class TeamStats extends Component {
             teamGoals /= team.players.length;
             teamTackle /= team.players.length;
         }
-        
-        
-        
 
         return (
             <div id={team.team_id} className="stats">

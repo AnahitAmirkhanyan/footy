@@ -23,21 +23,30 @@ class Player extends Component {
         e.stopPropagation();
     }
     render() {    
-        const { currentlyComparing } = this.props;
+        const { currentlyComparing, playerOne, playerTwo } = this.props;
+        const id = this.props.value.player_id;
         let classname = 'player';
+        let draggable = true;
         if(currentlyComparing === "player") {
-            classname += " green"
+            classname += " green";
+            draggable = true;
         } else if (currentlyComparing == "team") {
-            classname += " red"
+            classname += " red";
+            draggable =false;
+        }
+
+        if(playerOne && playerOne.player_id === id || playerTwo && playerTwo.player_id === id) {
+            classname += " red";
+            draggable =false;
         }
 
         return (
             <div
-                id={this.props.value.player_id}
+                id={id}
                 className={classname}
                 onDragStart={this.dragStart} 
                 onDragOver={this.dragOver}
-                draggable={!this.state.disabled}
+                draggable={draggable}
                 >
                 { this.props.value.name }
             </div>
@@ -50,9 +59,11 @@ const mapDispatchToProps = dispatch => ({
 })
 
 function mapStateToProps(state) {
-    const { currentlyComparing } = state.teams;
+    const { currentlyComparing, playerOne, playerTwo } = state.teams;
     return {
-        currentlyComparing
+        currentlyComparing,
+        playerOne,
+        playerTwo
     }
 }
 
