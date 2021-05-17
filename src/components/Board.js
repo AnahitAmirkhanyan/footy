@@ -2,7 +2,7 @@ import React, { Component }  from 'react';
 import TeamStats from './TeamStats';
 import PlayerStats from './PlayerStats';
 import { connect } from 'react-redux';
-import { getPlayerOne, getPlayerTwo, getTeamOne, getTeamTwo, setCurrentlyComparing } from '../actions/clientActions';
+import { clearAll, getPlayerOne, getPlayerTwo, getTeamOne, getTeamTwo, setCurrentlyComparing } from '../actions/clientActions';
 
 
 class Board extends Component {
@@ -38,7 +38,7 @@ class Board extends Component {
             }
         }
 
-        const { getPlayerOne, getPlayerTwo, getTeamOne, getTeamTwo, setCurrentlyComparing } =this.props;
+        const { getPlayerOne, getPlayerTwo, getTeamOne, getTeamTwo, setCurrentlyComparing, clearAll } =this.props;
 
       
 
@@ -204,11 +204,36 @@ class Board extends Component {
             leftItem = <TeamStats statProps={leftProps} value={this.props.teamOne} handleClick={this.handleClick}/>
             rightItem = <TeamStats statProps={rightProps} value={this.props.teamTwo} handleClick={this.handleClick}/>
         } else {
-            const {leftProps, rightProps} = this.objectCompareAndReturn(this.state.leftDisplayed, this.state.rightDisplayed, [
+
+            const playerOneStats = {
+                goals: 0,
+                appearances: 0,
+                tackle:0
+            };
+
+            const playerTwoStats = {
+                goals: 0,
+                appearances: 0,
+                tackle:0
+            }
+
+            if(this.props.playerOne) {
+                playerOneStats.goals = this.props.playerOne.goals;
+                playerOneStats.appearances = this.props.playerOne.appearances;
+                playerOneStats.tackle = this.props.playerOne.tackle;
+            }
+
+            if(this.props.playerTwo) {
+                playerTwoStats.goals = this.props.playerTwo.goals;
+                playerTwoStats.appearances = this.props.playerTwo.appearances;
+                playerTwoStats.tackle = this.props.playerTwo.tackle;
+            }
+
+            const {leftProps, rightProps} = this.objectCompareAndReturn(playerOneStats, playerTwoStats, [
                 'goals',
                 'appearances',
                 'tackle'
-            ])
+            ])         
 
             leftItem = <PlayerStats statProps={leftProps} value={this.props.playerOne} handleClick={this.handleClick}/>
             rightItem = <PlayerStats statProps={rightProps} value={this.props.playerTwo} handleClick={this.handleClick}/>
@@ -244,7 +269,8 @@ function mapDispatchToProps(dispatch) {
         getPlayerTwo: (value) => dispatch(getPlayerTwo(value)),
         getTeamOne: (value) => dispatch(getTeamOne(value)),
         getTeamTwo: (value) => dispatch(getTeamTwo(value)),
-        setCurrentlyComparing: (value) => dispatch(setCurrentlyComparing(value))
+        setCurrentlyComparing: (value) => dispatch(setCurrentlyComparing(value)),
+        clearAll: () => dispatch(clearAll())
     }
 }
 

@@ -1,4 +1,4 @@
-import { FETCH_LEAGUES, FETCH_TEAMS, GET_TEAM_ONE_BY_ID, GET_TEAM_TWO_BY_ID, GET_PLAYER_ONE_BY_ID, GET_PLAYER_TWO_BY_ID, GET_CURRENTLY_COMPARING, SET_CURRENTLY_COMPARING } from './types';
+import { FETCH_LEAGUES, FETCH_TEAMS, GET_TEAM_ONE_BY_ID, GET_TEAM_TWO_BY_ID, GET_PLAYER_ONE_BY_ID, GET_PLAYER_TWO_BY_ID, GET_CURRENTLY_COMPARING, SET_CURRENTLY_COMPARING, CLEAR_ALL } from './types';
 
 export const fetchLeagues = () => async dispatch => {
   const list = require('../data/data.json');
@@ -54,5 +54,11 @@ export const setCurrentlyComparing = (item_type) => async dispatch => {
   dispatch({
     type: SET_CURRENTLY_COMPARING,
     payload: item_type 
+  })
+}
+
+export const clearAll = () => async dispatch => {
+  dispatch({
+    type: CLEAR_ALL
   })
 }

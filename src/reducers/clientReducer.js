@@ -1,5 +1,5 @@
 
-import { FETCH_TEAMS, SET_CURRENTLY_COMPARING, GET_CURRENTLY_COMPARING, GET_PLAYER_ONE_BY_ID, GET_PLAYER_TWO_BY_ID, GET_TEAM_ONE_BY_ID, GET_TEAM_TWO_BY_ID, FETCH_LEAGUES } from '../actions/types';
+import { FETCH_TEAMS, SET_CURRENTLY_COMPARING, GET_CURRENTLY_COMPARING, GET_PLAYER_ONE_BY_ID, GET_PLAYER_TWO_BY_ID, GET_TEAM_ONE_BY_ID, GET_TEAM_TWO_BY_ID, FETCH_LEAGUES, CLEAR_ALL } from '../actions/types';
 
 const initialState = {
     leagues: [],
@@ -69,6 +69,16 @@ export default function clientReducer(state = initialState, action) {
         case GET_CURRENTLY_COMPARING:
             return {
                 ...state
+            }
+        
+        case CLEAR_ALL:
+            return {
+                ... state,
+                playerOne: '',
+                playerTwoID: '',
+                teamOne: '',
+                teamTwo: '',
+                currentlyComparing: ''
             }
         default:
             return state;
