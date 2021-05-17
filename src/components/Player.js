@@ -17,20 +17,24 @@ class Player extends Component {
     dragStart = e => {
         const target = e.target;
         e.dataTransfer.setData('item_id', target.id);
-
-        // setTimeout(() => {
-        //     target.style.display = "none";
-        // }, 0);
     }
 
     dragOver = e => {
         e.stopPropagation();
     }
     render() {    
+        const { currentlyComparing } = this.props;
+        let classname = 'player';
+        if(currentlyComparing === "player") {
+            classname += " green"
+        } else if (currentlyComparing == "team") {
+            classname += " red"
+        }
+
         return (
             <div
                 id={this.props.value.player_id}
-                className="player"
+                className={classname}
                 onDragStart={this.dragStart} 
                 onDragOver={this.dragOver}
                 draggable={!this.state.disabled}
@@ -39,7 +43,6 @@ class Player extends Component {
             </div>
         )
     }
-    
 }
 
 const mapDispatchToProps = dispatch => ({

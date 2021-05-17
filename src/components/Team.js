@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
+import { getCurrentlyComparing } from '../actions/clientActions';
 import Player from './Player';
+import { connect } from 'react-redux';
 
-export default class Team extends Component {
+class Team extends Component {
 
     constructor(props) {
         super(props);
@@ -13,6 +15,7 @@ export default class Team extends Component {
         this.displayPlayers = this.displayPlayers.bind(this);
         this.dragStart = this.dragStart.bind(this);
         this.dragOver = this.dragOver.bind(this);
+        getCurrentlyComparing();
     }
 
     dragStart = e => {
@@ -33,6 +36,15 @@ export default class Team extends Component {
 
     render() {
 
+        const { currentlyComparing } = this.props;
+        let classname = 'team';
+        if(currentlyComparing === "team") {
+            console.log('here');
+            classname += " green"
+        } else if (currentlyComparing === "player") {
+            classname += " red"
+        }
+
         const players = this.props.value.players.map(player => (
             <Player key={ player.player_id } value={ player }/>
         ))
@@ -41,7 +53,7 @@ export default class Team extends Component {
 
         return (
             <div>
-                <div className="team" 
+                <div className={classname} 
                  id={this.props.value.team_id} 
                  onDragStart={this.dragStart} 
                  onClick={this.displayPlayers}
@@ -58,6 +70,17 @@ export default class Team extends Component {
             </div>
         )    
     }
-
-
 }
+
+const mapDispatchToProps = dispatch => ({
+    getCurrentlyComparing: () => dispatch(getCurrentlyComparing())
+})
+
+function mapStateToProps(state) {
+    const { currentlyComparing } = state.teams;
+    return {
+        currentlyComparing
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Team);
