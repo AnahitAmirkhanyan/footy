@@ -19,9 +19,11 @@ class TeamStats extends Component {
         }
         
         
+        
 
         return (
             <div id={team.team_id} className="stats">
+                <button className="button" onClick={()=> this.props.handleClick(team.team_id)}> X </button>
                 <h3>{team.name}</h3>
                 <br/>
                 <div>

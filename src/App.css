@@ -70,3 +70,11 @@ body {
 .brown {
   color: brown;
 }
+
+.button {
+  float: right;
+}
+
+.button:hover {
+  cursor: pointer;
+}

@@ -6,6 +6,7 @@ class PlayerStats extends Component {
         const player = this.props.value;
         return (
             <div id={player.player_id} className="stats">
+                <button className="button" onClick={()=> this.props.handleClick(player.player_id)}> X </button>
                 <h3>{player.name}</h3>
                 <br/>
                 <div>
@@ -29,19 +30,5 @@ class PlayerStats extends Component {
         )
     }
 }
-
-// function mapStateToProps(state) {
-//     const { player } = state.teams;
-//     return {
-//         player
-//     }
-// }
-
-// function mapDispatchToProps(dispatch) {
-//     return {
-//         getPlayer: (value) => dispatch(getPlayer(value)),
-//     }
-// }
-
 
 export default PlayerStats;

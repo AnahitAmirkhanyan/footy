@@ -16,7 +16,54 @@ class Board extends Component {
         }
 
         this.drop = this.drop.bind(this);
-        this.dragOver =this.dragOver.bind(this); 
+        this.dragOver = this.dragOver.bind(this); 
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(itemID) {
+        let leftDisplayed = this.state.leftDisplayed;
+        let rightDisplayed = this.state.rightDisplayed;
+        let displayedTypeTeam = this.state.displayedTypeTeam;
+
+        if(itemID === rightDisplayed) {
+            rightDisplayed = '';
+        }
+
+        if(itemID === this.state.leftDisplayed) {
+            if(rightDisplayed){
+                leftDisplayed = rightDisplayed;
+                rightDisplayed ='';  
+            } else {
+                leftDisplayed = '';
+            }
+        }
+
+        const { setCurrentlyComparing } =this.props;
+
+        if(!leftDisplayed && !rightDisplayed) {
+            setCurrentlyComparing('');
+            displayedTypeTeam = '';
+        }
+
+        this.setState({
+            leftDisplayed,
+            rightDisplayed,
+            displayedTypeTeam
+        });
+        
+        const {getPlayerOne, getPlayerTwo, getTeamOne, getTeamTwo } = this.props;
+        
+        if(!displayedTypeTeam) {
+            leftDisplayed && getPlayerOne(leftDisplayed);
+            rightDisplayed && getPlayerTwo(rightDisplayed);
+        } else {
+            leftDisplayed && getTeamOne(leftDisplayed);
+
+            if(rightDisplayed) {
+                getTeamTwo(rightDisplayed);
+            }
+        }
+        
     }
 
     drop = e => {
@@ -149,8 +196,8 @@ class Board extends Component {
                 'teamTackle'
             ]);
 
-            leftItem = <TeamStats statProps={leftProps} value={this.props.teamOne}/>
-            rightItem = <TeamStats statProps={rightProps} value={this.props.teamTwo}/>
+            leftItem = <TeamStats statProps={leftProps} value={this.props.teamOne} handleClick={this.handleClick}/>
+            rightItem = <TeamStats statProps={rightProps} value={this.props.teamTwo} handleClick={this.handleClick}/>
         } else {
             const {leftProps, rightProps} = this.objectCompareAndReturn(this.props.playerOne, this.props.playerTwo, [
                 'goals',
@@ -158,8 +205,8 @@ class Board extends Component {
                 'tackle'
             ])
 
-            leftItem = <PlayerStats statProps={leftProps} value={this.props.playerOne}/>
-            rightItem = <PlayerStats statProps={rightProps} value={this.props.playerTwo}/>
+            leftItem = <PlayerStats statProps={leftProps} value={this.props.playerOne} handleClick={this.handleClick}/>
+            rightItem = <PlayerStats statProps={rightProps} value={this.props.playerTwo} handleClick={this.handleClick}/>
         }        
 
         return (

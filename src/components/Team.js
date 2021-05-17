@@ -39,7 +39,6 @@ class Team extends Component {
         const { currentlyComparing } = this.props;
         let classname = 'team';
         if(currentlyComparing === "team") {
-            console.log('here');
             classname += " green"
         } else if (currentlyComparing === "player") {
             classname += " red"
